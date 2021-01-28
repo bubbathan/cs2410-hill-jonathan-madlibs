@@ -5,9 +5,13 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,7 +20,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         LinearLayout mainLayout = new LinearLayout(this);
+        ScrollView scrollView = new ScrollView(this);
+        LinearLayout.LayoutParams mainLayoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        mainLayoutParams.setMargins(48, 48, 48, 48);
+        mainLayout.setLayoutParams(mainLayoutParams);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
+
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                Log.d("ScrollView", "I was scrolled");
+            }
+        });
 
         AppCompatTextView instructionsTextView = new AppCompatTextView(this);
         instructionsTextView.setText("Let's make a Mad Lib!\n\n");
@@ -52,22 +70,39 @@ public class MainActivity extends AppCompatActivity {
         nameTwoEdit.setHint("Name");
 
         AppCompatTextView adjectiveThreeText = new AppCompatTextView(this);
-        adjectiveThreeText.setText("Pick and adjective");
+        adjectiveThreeText.setText("Pick an adjective");
         AppCompatEditText adjectiveThreeEdit = new AppCompatEditText(this);
         adjectiveThreeEdit.setHint("Adjective");
 
         AppCompatButton displayMadLibButton = new AppCompatButton(this);
         displayMadLibButton.setText("Display Mad Lib");
 
+        AppCompatTextView madLib = new AppCompatTextView(this);
+        LinearLayout.LayoutParams madLibParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        madLibParams.setMargins(48, 48, 48, 48);
+        madLib.setLayoutParams(madLibParams);
+
         displayMadLibButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String adjectiveOneLib = adjectiveOneEdit.getText().toString();
+                String jobTitleLib = jobTitleEdit.getText().toString();
+                String nameOneLib = nameOneEdit.getText().toString();
+                String thingLib = thingEdit.getText().toString();
+                String adjectiveTwoLib = adjectiveTwoEdit.getText().toString();
+                String nameTwoLib = nameTwoEdit.getText().toString();
+                String adjectiveThreeLib = adjectiveThreeEdit.getText().toString();
 
+                madLib.setText("A(n) " + adjectiveOneLib + " " + jobTitleLib + " named " + nameOneLib +
+                        " sold their " + thingLib + " to a(n) " + adjectiveTwoLib + " person named " +
+                        nameTwoLib + ". This is shaping up to be a(n) " + adjectiveThreeLib +
+                        " day for " + nameTwoLib + ".\n\n");
+                madLib.setBackgroundColor(Color.YELLOW);
             }
         });
-
-        // A _adj_ _job title_ named _name_ sold a _thing_ to a _adj_ person named
-        // _name_. This is shaping up to be an _adj_ day for _name_.
 
         mainLayout.addView(instructionsTextView);
         mainLayout.addView(adjectiveOneText);
@@ -85,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.addView(adjectiveThreeText);
         mainLayout.addView(adjectiveThreeEdit);
         mainLayout.addView(displayMadLibButton);
-        setContentView(mainLayout);
+        mainLayout.addView(madLib);
+        scrollView.addView(mainLayout);
+        setContentView(scrollView);
     }
 }
