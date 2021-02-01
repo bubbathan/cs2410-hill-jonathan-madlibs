@@ -1,4 +1,4 @@
-package com.usu.homework1_madlibs_jonathanhill;
+package com.bubsstuff.homework1_madlibs_jonathanhill;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
